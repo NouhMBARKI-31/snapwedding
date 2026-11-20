@@ -1,5 +1,5 @@
 /**
- * Module "album" (membre C) : les albums d'un événement ("Cérémonie", "Soirée"...).
+ * Module "album" : les albums d'un événement ("Cérémonie", "Soirée"...).
  *
  * API publique : {@link fr.snapwedding.album.AlbumApi}, {@link fr.snapwedding.album.AlbumView}
  * et l'événement {@link fr.snapwedding.album.AlbumDeleted}.

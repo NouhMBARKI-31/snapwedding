@@ -1,5 +1,5 @@
 /**
- * Module "event" (membre A) : les événements de l'organisateur, leur code public et leur QR code.
+ * Module "event" : les événements de l'organisateur, leur code public et leur QR code.
  *
  * API publique pour les autres modules : {@link fr.snapwedding.event.EventApi},
  * {@link fr.snapwedding.event.EventView}, {@link fr.snapwedding.event.EventStatus}

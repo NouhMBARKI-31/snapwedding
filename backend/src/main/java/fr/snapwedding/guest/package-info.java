@@ -1,5 +1,5 @@
 /**
- * Module "guest" (membre B) : les invités sans compte, leur jeton et la 2e chaîne de sécurité.
+ * Module "guest" : les invités sans compte, leur jeton et la 2e chaîne de sécurité.
  *
  * API publique : {@link fr.snapwedding.guest.GuestApi} (qui est l'invité connecté ?)
  * et {@link fr.snapwedding.guest.GuestView}.
