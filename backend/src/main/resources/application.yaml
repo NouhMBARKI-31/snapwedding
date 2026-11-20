@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: snapwedding
+  # Lit backend/.env s'il existe (GOOGLE_CLIENT_ID, SUPER_ADMINS) : aucun secret dans le dépôt
+  config:
+    import: optional:file:.env[.properties]
+  threads:
+    virtual:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB       # une photo
+      max-request-size: 50MB    # plusieurs photos envoyées d'un coup
+  datasource:
+    url: jdbc:postgresql://localhost:5432/snapwedding
+    username: snap
+    password: snap
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true              # pour montrer les requêtes SQL en soutenance (pas de N+1)
+    open-in-view: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          # Rejette les tokens émis pour une autre application (claim "aud")
+          audiences: ${GOOGLE_CLIENT_ID}
+  modulith:
+    events:
+      # Les événements entre modules sont enregistrés en base avant d'être traités :
+      # s'il y a un crash, ils sont rejoués au redémarrage.
+      republish-outstanding-events-on-restart: true
+
+snapwedding:
+  # URL du front : c'est elle qui est encodée dans le QR code (front-url/e/<code public>)
+  front-url: ${FRONT_URL:http://localhost:5173}
+  # Identifiants Google (claim "sub") des super-admins, séparés par des virgules
+  super-admins: ${SUPER_ADMINS:}
+
+storage:
+  s3:
+    endpoint: http://localhost:9000
+    region: us-east-1
+    access-key: rustfsadmin
+    secret-key: rustfsadmin
+    bucket: snapwedding
