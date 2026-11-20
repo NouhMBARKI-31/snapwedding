@@ -1,0 +1,19 @@
+meta {
+  name: 15 Organisateur - Fermer l'événement
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{eventId}}/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+assert {
+  res.status: eq 200
+}

@@ -1,0 +1,9 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.shared`
+|Spring components
+|_Configuration properties_
+
+* `f.s.s.SnapWeddingProperties`
+|===

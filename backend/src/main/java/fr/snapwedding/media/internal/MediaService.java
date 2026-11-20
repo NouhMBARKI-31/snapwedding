@@ -22,6 +22,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -41,6 +42,7 @@ class MediaService implements MediaApi {
     private final MediaRepository repository;
     private final MediaStorage storage;
     private final FileTypeChecker typeChecker;
+    private final ThumbnailGenerator thumbnails;
     private final AlbumApi albums;
     private final EventApi events;
     private final GuestApi guests;
@@ -165,13 +167,42 @@ class MediaService implements MediaApi {
         return storage.get(media.getS3Key());
     }
 
+    InputStream thumbnail(Media media) {
+        return storage.get(media.getThumbnailKey());
+    }
+
+    /**
+     * Option "miniatures asynchrones" : appelé par ThumbnailListener, après le commit du dépôt,
+     * dans un autre thread. L'invité n'attend donc jamais ce calcul.
+     */
+    @Transactional
+    void createThumbnail(Long mediaId) {
+        Media media = repository.findById(mediaId).orElse(null);
+        if (media == null || media.hasThumbnail()) {
+            return; // supprimée entre-temps, ou déjà faite (événement rejoué au redémarrage)
+        }
+        byte[] original;
+        try (InputStream in = storage.get(media.getS3Key())) {
+            original = in.readAllBytes();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        byte[] jpeg = thumbnails.toJpeg(original).orElse(null);
+        if (jpeg == null) {
+            return; // format illisible par ImageIO (HEIC, WebP) : la galerie affichera l'original
+        }
+        String key = media.getS3Key() + "-thumb.jpg";
+        storage.put(key, new ByteArrayInputStream(jpeg), jpeg.length, "image/jpeg");
+        media.attachThumbnail(key); // sauvegardé au commit (entité suivie par JPA)
+    }
+
     /**
      * Supprime la ligne, puis le fichier S3 APRÈS le commit : si la base échoue, le fichier
      * est toujours là (rien de perdu) ; si S3 échoue ensuite, il reste un orphelin, signalé dans les logs.
      */
     private void delete(Media media) {
         repository.delete(media);
-        deleteFilesAfterCommit(List.of(media.getS3Key()));
+        deleteFilesAfterCommit(media.storageKeys());
     }
 
     void deleteFilesAfterCommit(List<String> keys) {
@@ -189,14 +220,16 @@ class MediaService implements MediaApi {
 
     @Transactional
     void deleteAllOfEvent(Long eventId) {
-        List<String> keys = repository.findKeysByEventId(eventId);
+        List<String> keys = new ArrayList<>(repository.findKeysByEventId(eventId));
+        keys.addAll(repository.findThumbnailKeysByEventId(eventId));
         repository.deleteAllByEventId(eventId);
         deleteFilesAfterCommit(keys);
     }
 
     @Transactional
     void deleteAllOfAlbum(Long albumId) {
-        List<String> keys = repository.findKeysByAlbumId(albumId);
+        List<String> keys = new ArrayList<>(repository.findKeysByAlbumId(albumId));
+        keys.addAll(repository.findThumbnailKeysByAlbumId(albumId));
         repository.deleteAllByAlbumId(albumId);
         deleteFilesAfterCommit(keys);
     }

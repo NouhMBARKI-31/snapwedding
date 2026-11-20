@@ -1,0 +1,23 @@
+meta {
+  name: 17 Admin - Tous les événements et statistiques
+  type: http
+  seq: 17
+}
+
+docs {
+  Nécessite un compte dont le "sub" Google est dans SUPER_ADMINS (sinon 403).
+}
+
+get {
+  url: {{baseUrl}}/api/admin/events
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+assert {
+  res.status: eq 200
+}

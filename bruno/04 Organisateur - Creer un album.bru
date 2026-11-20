@@ -1,0 +1,29 @@
+meta {
+  name: 04 Organisateur - Créer un album
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{eventId}}/albums
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+body:json {
+  {
+    "name": "Soirée"
+  }
+}
+
+script:post-response {
+  bru.setVar("albumId", res.body.id);
+}
+
+assert {
+  res.status: eq 201
+}

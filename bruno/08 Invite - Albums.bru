@@ -1,0 +1,19 @@
+meta {
+  name: 08 Invité - Albums de mon événement
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/guest/albums
+  body: none
+  auth: none
+}
+
+headers {
+  X-Guest-Token: {{guestToken}}
+}
+
+assert {
+  res.status: eq 200
+}

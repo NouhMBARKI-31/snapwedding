@@ -1,6 +1,6 @@
 import { api, Auth, blobUrl, guest, json, ORGANIZER, PageResponse } from './client';
 
-/** Membre C : photos. */
+/** Photos : galerie, dépôt et modération. */
 
 export interface MediaDto {
   id: number;
@@ -13,6 +13,8 @@ export interface MediaDto {
   mine: boolean;
   createdAt: string;
 }
+
+export type ImageVariant = 'thumbnail' | 'content';
 
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // identique à spring.servlet.multipart.max-file-size
 
@@ -34,7 +36,10 @@ export const mediaApi = {
   },
   guestRemove: (code: string, id: number) => api<void>(`/api/guest/media/${id}`, guest(code), { method: 'DELETE' }),
 
-  /** URL locale de l'image : les photos sont protégées, un simple <img src> n'enverrait pas le jeton. */
-  imageUrl: (id: number, auth: Auth) =>
-    blobUrl(auth.kind === 'guest' ? `/api/guest/media/${id}/content` : `/api/media/${id}/content`, auth),
+  /**
+   * URL locale de l'image : les photos sont protégées, un simple <img src> n'enverrait pas le jeton.
+   * 'thumbnail' pour les grilles (rapide), 'content' pour voir la photo en grand.
+   */
+  imageUrl: (id: number, auth: Auth, variant: ImageVariant = 'thumbnail') =>
+    blobUrl(auth.kind === 'guest' ? `/api/guest/media/${id}/${variant}` : `/api/media/${id}/${variant}`, auth),
 };

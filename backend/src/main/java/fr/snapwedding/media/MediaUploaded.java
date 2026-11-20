@@ -1,8 +1,8 @@
 package fr.snapwedding.media;
 
 /**
- * Publié après chaque dépôt de photo. Personne ne l'écoute encore dans le socle :
- * c'est le point d'accroche de l'option "miniatures en asynchrone" (et de statistiques, notifications...).
+ * Publié après chaque dépôt de photo. Écouté par ThumbnailListener (option "miniatures asynchrones") ;
+ * d'autres modules pourraient s'y abonner plus tard (statistiques, notifications...) sans toucher à media.
  */
 public record MediaUploaded(Long mediaId, Long eventId, Long albumId, long size) {
 }

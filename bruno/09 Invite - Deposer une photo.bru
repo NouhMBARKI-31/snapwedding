@@ -1,0 +1,27 @@
+meta {
+  name: 09 Invité - Déposer une photo
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/guest/albums/{{albumId}}/media
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  X-Guest-Token: {{guestToken}}
+}
+
+body:multipart-form {
+  files: @file(photo.jpg)
+}
+
+script:post-response {
+  bru.setVar("mediaId", res.body[0].id);
+}
+
+assert {
+  res.status: eq 201
+}

@@ -1,0 +1,19 @@
+meta {
+  name: 10 Invité - Galerie de l'album
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/guest/albums/{{albumId}}/media
+  body: none
+  auth: none
+}
+
+headers {
+  X-Guest-Token: {{guestToken}}
+}
+
+assert {
+  res.status: eq 200
+}

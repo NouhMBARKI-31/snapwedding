@@ -1,0 +1,23 @@
+meta {
+  name: 16 Sécurité - Jeton invité après fermeture
+  type: http
+  seq: 16
+}
+
+docs {
+  Le jeton est vérifié à chaque requête : dès que l'événement est fermé, il ne marche plus.
+}
+
+get {
+  url: {{baseUrl}}/api/guest/albums
+  body: none
+  auth: none
+}
+
+headers {
+  X-Guest-Token: {{guestToken}}
+}
+
+assert {
+  res.status: eq 401
+}

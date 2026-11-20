@@ -1,0 +1,19 @@
+meta {
+  name: 07 Invité - Ma session
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/guest/me
+  body: none
+  auth: none
+}
+
+headers {
+  X-Guest-Token: {{guestToken}}
+}
+
+assert {
+  res.status: eq 200
+}

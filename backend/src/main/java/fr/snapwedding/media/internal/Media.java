@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Une photo. En base, seulement ses MÉTADONNÉES : le fichier lui-même est dans S3 (s3Key).
@@ -51,6 +52,9 @@ public class Media {
     @Column(nullable = false)
     private long size;
 
+    /** Clé S3 de la miniature, null tant qu'elle n'est pas prête (option "miniatures asynchrones"). */
+    private String thumbnailKey;
+
     /** Masquée par l'organisateur (modération) : invisible pour les invités. */
     private boolean hidden;
 
@@ -72,6 +76,19 @@ public class Media {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public void attachThumbnail(String key) {
+        this.thumbnailKey = key;
+    }
+
+    public boolean hasThumbnail() {
+        return thumbnailKey != null;
+    }
+
+    /** Tous les fichiers S3 de cette photo : l'original, et la miniature si elle existe. */
+    public List<String> storageKeys() {
+        return hasThumbnail() ? List.of(s3Key, thumbnailKey) : List.of(s3Key);
     }
 
     /** I5 : un invité ne peut supprimer que ses propres photos. */

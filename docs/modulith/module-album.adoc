@@ -1,0 +1,14 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.album`
+|Spring components
+|_Services_
+
+* `f.s.a.AlbumApi` (via `f.s.a.internal.AlbumService`)
+|Bean references
+|* `f.s.e.EventApi` (in Event)
+* `f.s.g.GuestApi` (in Guest)
+|Events listened to
+|* `f.s.e.EventDeleted` (async) 
+|===

@@ -1,6 +1,6 @@
 import { api, guest, json, ORGANIZER } from './client';
 
-/** Membre C : albums. */
+/** Albums d'un événement. */
 
 export interface AlbumDto {
   id: number;

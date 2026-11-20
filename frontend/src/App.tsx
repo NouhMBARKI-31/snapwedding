@@ -7,14 +7,13 @@ import { AppLayout } from '@/components/AppLayout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
-// Membre A
+// Organisateur et super-admin
 import EventsPage from '@/pages/organizer/EventsPage';
 import EventDetailPage from '@/pages/organizer/EventDetailPage';
 import AdminPage from '@/pages/admin/AdminPage';
-// Membre B
+// Invité
 import GuestEventPage from '@/pages/guest/GuestEventPage';
 import DemoPage from '@/pages/guest/DemoPage';
-// Membre C
 import GuestAlbumPage from '@/pages/guest/GuestAlbumPage';
 
 const App = () => (

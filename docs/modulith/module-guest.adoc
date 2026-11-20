@@ -1,0 +1,13 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.guest`
+|Spring components
+|_Services_
+
+* `f.s.g.GuestApi` (via `f.s.g.internal.GuestService`)
+|Bean references
+|* `f.s.e.EventApi` (in Event)
+|Events listened to
+|* `f.s.e.EventDeleted` (async) 
+|===

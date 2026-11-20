@@ -54,4 +54,16 @@ class MediaController {
                 .contentLength(media.getSize())
                 .body(new InputStreamResource(service.content(media)));
     }
+
+    @GetMapping("/api/media/{id}/thumbnail")
+    @Operation(summary = "La miniature de la photo (l'original tant qu'elle n'est pas prête)")
+    ResponseEntity<InputStreamResource> thumbnail(@PathVariable Long id) {
+        Media media = service.getForOrganizer(id);
+        if (!media.hasThumbnail()) {
+            return content(id);
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(service.thumbnail(media)));
+    }
 }

@@ -20,10 +20,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -43,6 +45,7 @@ class MediaServiceTest {
     @Mock MediaRepository repository;
     @Mock MediaStorage storage;
     @Mock FileTypeChecker typeChecker;
+    @Mock ThumbnailGenerator thumbnails;
     @Mock AlbumApi albums;
     @Mock EventApi events;
     @Mock GuestApi guests;
@@ -92,5 +95,19 @@ class MediaServiceTest {
 
         assertThatThrownBy(() -> service.deleteByGuest(9L)).isInstanceOf(ForbiddenException.class);
         verify(repository, never()).delete(eq(ofSomeoneElse));
+    }
+
+    @Test
+    void theThumbnailIsStoredNextToThePhotoAndAttachedToIt() {
+        Media media = new Media(7L, 3L, 1L, "Yassine", "events/7/albums/3/abc", "p.jpg", "image/jpeg", 10);
+        when(repository.findById(9L)).thenReturn(Optional.of(media));
+        when(storage.get("events/7/albums/3/abc")).thenReturn(new ByteArrayInputStream(new byte[]{1, 2, 3}));
+        when(thumbnails.toJpeg(any())).thenReturn(Optional.of(new byte[]{4, 5}));
+
+        service.createThumbnail(9L);
+
+        verify(storage).put(eq("events/7/albums/3/abc-thumb.jpg"), any(), eq(2L), eq("image/jpeg"));
+        assertThat(media.hasThumbnail()).isTrue();
+        assertThat(media.storageKeys()).containsExactly("events/7/albums/3/abc", "events/7/albums/3/abc-thumb.jpg");
     }
 }

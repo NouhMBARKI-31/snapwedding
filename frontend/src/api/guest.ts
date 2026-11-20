@@ -1,6 +1,6 @@
 import { api, guest, GuestSession, guestSessions, json, PUBLIC } from './client';
 
-/** Membre B : rejoindre un événement et session invité. */
+/** Invités : rejoindre un événement et session invité. */
 
 export const guestApi = {
   /** I2 : pseudo -> jeton d'invité, gardé dans le navigateur pour cet événement. */

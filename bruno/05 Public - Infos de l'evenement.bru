@@ -1,0 +1,15 @@
+meta {
+  name: 05 Public - Infos de l'événement (QR code scanné)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/public/events/{{publicCode}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

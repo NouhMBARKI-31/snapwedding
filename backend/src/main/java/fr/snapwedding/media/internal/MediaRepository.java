@@ -44,6 +44,12 @@ interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("select m.s3Key from Media m where m.albumId = :albumId")
     List<String> findKeysByAlbumId(Long albumId);
 
+    @Query("select m.thumbnailKey from Media m where m.eventId = :eventId and m.thumbnailKey is not null")
+    List<String> findThumbnailKeysByEventId(Long eventId);
+
+    @Query("select m.thumbnailKey from Media m where m.albumId = :albumId and m.thumbnailKey is not null")
+    List<String> findThumbnailKeysByAlbumId(Long albumId);
+
     @Modifying
     @Query("delete from Media m where m.eventId = :eventId")
     void deleteAllByEventId(Long eventId);

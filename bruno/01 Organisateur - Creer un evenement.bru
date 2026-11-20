@@ -1,0 +1,32 @@
+meta {
+  name: 01 Organisateur - Créer un événement
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+body:json {
+  {
+    "name": "Mariage de démo",
+    "date": "2027-06-12",
+    "location": "Toulouse"
+  }
+}
+
+script:post-response {
+  bru.setVar("eventId", res.body.id);
+  bru.setVar("publicCode", res.body.publicCode);
+}
+
+assert {
+  res.status: eq 201
+}

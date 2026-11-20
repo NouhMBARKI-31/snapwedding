@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ApiError, guest, guestSessions } from '@/api/client';
 import { AlbumDto, albumsApi } from '@/api/albums';
 import { MAX_FILE_SIZE, MediaDto, mediaApi } from '@/api/media';
-import { ProtectedImage } from '@/components/media/ProtectedImage';
+import { ZoomablePhoto } from '@/components/media/ProtectedImage';
 import { GuestLayout } from './GuestLayout';
 
 /** Invité : déposer des photos dans un album (I3), voir la galerie partagée (I4), supprimer les siennes (I5). */
@@ -88,8 +88,8 @@ export default function GuestAlbumPage() {
       <div className="grid grid-cols-2 gap-2">
         {media.map((item) => (
           <div key={item.id} className="relative rounded-md overflow-hidden bg-background">
-            <ProtectedImage mediaId={item.id} auth={guest(code)} alt={`Photo de ${item.guestPseudo}`}
-                            className="w-full aspect-square object-cover" />
+            <ZoomablePhoto mediaId={item.id} auth={guest(code)} alt={`Photo de ${item.guestPseudo}`}
+                          className="w-full aspect-square object-cover" />
             <div className="absolute bottom-0 inset-x-0 flex items-center justify-between bg-black/50 px-2 py-1 text-xs text-white">
               <span className="truncate">{item.guestPseudo}</span>
               {item.mine && (

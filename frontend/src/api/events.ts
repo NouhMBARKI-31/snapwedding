@@ -1,6 +1,6 @@
 import { api, blobUrl, json, ORGANIZER, PageResponse, PUBLIC } from './client';
 
-/** Membre A : appels du module event et admin. */
+/** Événements (organisateur) et espace super-admin. */
 
 export type EventStatus = 'OPEN' | 'CLOSED' | 'SUSPENDED';
 

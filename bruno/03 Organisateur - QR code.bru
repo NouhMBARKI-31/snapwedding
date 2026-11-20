@@ -1,0 +1,19 @@
+meta {
+  name: 03 Organisateur - QR code (PNG)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/events/{{eventId}}/qrcode
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+assert {
+  res.status: eq 200
+}

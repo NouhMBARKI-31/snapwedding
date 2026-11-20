@@ -1,0 +1,11 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.event`
+|Spring components
+|_Services_
+
+* `f.s.e.EventApi` (via `f.s.e.internal.EventService`)
+|Bean references
+|* `f.s.s.SnapWeddingProperties` (in Shared)
+|===

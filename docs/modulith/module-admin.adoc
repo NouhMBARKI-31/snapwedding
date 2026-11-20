@@ -1,0 +1,8 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.admin`
+|Bean references
+|* `f.s.e.EventApi` (in Event)
+* `f.s.m.MediaApi` (in Media)
+|===

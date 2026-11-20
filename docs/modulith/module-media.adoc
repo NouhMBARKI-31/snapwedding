@@ -1,0 +1,17 @@
+[%autowidth.stretch, cols="h,a"]
+|===
+|Base package
+|`fr.snapwedding.media`
+|Spring components
+|_Services_
+
+* `f.s.m.MediaApi` (via `f.s.m.internal.MediaService`)
+|Bean references
+|* `f.s.g.GuestApi` (in Guest)
+* `f.s.a.AlbumApi` (in Album)
+* `f.s.e.EventApi` (in Event)
+|Events listened to
+|* `f.s.e.EventDeleted` (async) 
+* `f.s.a.AlbumDeleted` (async) 
+* `f.s.m.MediaUploaded` (async) 
+|===

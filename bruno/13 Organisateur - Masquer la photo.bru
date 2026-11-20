@@ -1,0 +1,26 @@
+meta {
+  name: 13 Organisateur - Masquer la photo
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{baseUrl}}/api/media/{{mediaId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{googleToken}}
+}
+
+body:json {
+  {
+    "hidden": true
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.hidden: eq true
+}

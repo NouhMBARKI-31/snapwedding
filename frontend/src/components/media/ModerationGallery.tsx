@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ORGANIZER } from '@/api/client';
 import { MediaDto, mediaApi } from '@/api/media';
-import { ProtectedImage } from './ProtectedImage';
+import { ZoomablePhoto } from './ProtectedImage';
 
 /** Organisateur : toutes les photos d'un album avec le pseudo de l'invité (O5), masquer / supprimer (O6). */
 export function ModerationGallery({ albumId }: { albumId: number }) {
@@ -38,8 +38,8 @@ export function ModerationGallery({ albumId }: { albumId: number }) {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {media.map((item) => (
           <div key={item.id} className="rounded-md border overflow-hidden bg-background">
-            <ProtectedImage mediaId={item.id} auth={ORGANIZER} alt={item.originalFilename}
-                            className={`w-full aspect-square object-cover ${item.hidden ? 'opacity-30' : ''}`} />
+            <ZoomablePhoto mediaId={item.id} auth={ORGANIZER} alt={item.originalFilename}
+                          className={`w-full aspect-square object-cover ${item.hidden ? 'opacity-30' : ''}`} />
             <div className="p-2 space-y-2">
               <div className="flex items-center justify-between gap-2 text-xs">
                 <span className="truncate">par {item.guestPseudo}</span>

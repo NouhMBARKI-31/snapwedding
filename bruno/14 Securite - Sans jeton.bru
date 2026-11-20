@@ -1,0 +1,15 @@
+meta {
+  name: 14 Sécurité - Route invité sans jeton
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/guest/albums
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}
